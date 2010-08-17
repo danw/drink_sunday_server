@@ -1,0 +1,11 @@
+{application, drink_sunday_server,
+ [{description, "Drink Sunday Server"},
+  {vsn, "1.0"},
+  {modules, [sunday_server_app,
+             sunday_server_sup,
+             sunday_server]},
+  {registered,[]},
+  {applications, [kernel, stdlib, sasl, ssl, drink]},
+  {mod, {sunday_server_app, []}},
+  {start_phases, []}
+]}.
