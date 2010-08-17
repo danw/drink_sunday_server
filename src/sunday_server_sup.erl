@@ -4,7 +4,7 @@
 %%% Purpose : 
 %%%
 %%%
-%%% edrink, Copyright (C) 2008 Dan Willemsen
+%%% edrink, Copyright (C) 2010 Dan Willemsen
 %%%
 %%% This program is free software; you can redistribute it and/or
 %%% modify it under the terms of the GNU General Public License as
@@ -39,11 +39,11 @@ init ([]) ->
         {ok, Port} ->
             {ok, {{one_for_one, 10, 3},  % One for one restart, shutdown after 10 restarts within 3 seconds
                [{sunday_server,     % Our first child, the drink_machine_listener
-                 {gen_listener, start_link, [Port, {sunday_server, start_link, []}]},
+                 {dw_gen_listener, start_link, [Port, {sunday_server, start_link, []}]},
                  permanent,            % Always restart
                  100,                  % Allow 10 seconds for it to shutdown
                  worker,               % It isn't a supervisor
-                 [gen_listener, sunday_server]}]}};
+                 [dw_gen_listener, sunday_server]}]}};
         Err ->
             error_logger:error_msg("Unknown port ~p~n", [Err]),
             {error, invalid_port}
