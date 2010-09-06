@@ -220,6 +220,14 @@ got_command("EDITUSER", [Username, CreditsStr, Admin], State) ->
         {Credits, _} ->
             {error, 451, "Not implemented.", State}
     end;
+got_command("WHOAMI", [], State) ->
+    case State#sunday_state.userref of
+        nil ->
+            {error, 204, "You need to login.", State};
+        UserRef ->
+            {ok, UserInfo} = user_auth:user_info(UserRef),
+            {ok, "Username: " ++ UserInfo#user.username, State}
+    end;
 got_command("GETBALANCE", [], State) ->
 	case State#sunday_state.userref of
 		nil ->
