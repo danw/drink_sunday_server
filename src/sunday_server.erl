@@ -65,6 +65,7 @@ loop (waiting_for_socket, State) ->
 					gen_tcp:send(Socket, "OK Welcome to the Erlang Drink Server\n"),
 					nil
 			end,
+            drink_connections:register(nil, sunday_server, nil),
 			loop(normal, State#sunday_state{socket=Socket,machine=Machine});
 		_Else ->
 			loop(waiting_for_socket, State)
@@ -265,6 +266,7 @@ got_command("IBUTTON", [Ibutton], State) ->
 	case user_auth:auth(Ibutton) of
 		{ok, UserRef} ->
 			{ok, UserInfo} = user_auth:user_info(UserRef),
+            drink_connections:set_user(UserInfo#user.username),
 			NewNewState = NewState#sunday_state{userref = UserRef},
 			{ok, "Credits: " ++ integer_to_list(UserInfo#user.credits), NewNewState};
 		{error, _Reason} ->
@@ -305,6 +307,7 @@ got_command("PASS", [Pass], State) ->
 			case user_auth:auth(User, Pass) of
 				{ok, UserRef} ->
 					{ok, UserInfo} = user_auth:user_info(UserRef),
+                    drink_connections:set_user(UserInfo#user.username),
 					NewNewState = NewState#sunday_state{userref = UserRef},
 					{ok, "Credits: " ++ integer_to_list(UserInfo#user.credits), NewNewState};
 				{error, badpass} ->
