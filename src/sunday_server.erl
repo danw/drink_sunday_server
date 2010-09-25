@@ -173,7 +173,7 @@ got_command("DROP", [SlotStr, DelayStr], State) ->
             {error, 406, "Invalid parameters.", State};
         {Delay, _Rest} ->
             receive
-            after Delay ->
+            after Delay * 1000 ->
                 got_command("DROP", [SlotStr], State)
             end
     end;
