@@ -65,7 +65,7 @@ loop (waiting_for_socket, State) ->
 					gen_tcp:send(Socket, "OK Welcome to the Erlang Drink Server\n"),
 					nil
 			end,
-            drink_connections:register(nil, sunday_server, nil),
+            drink_connections:register("", sunday_server, nil),
 			loop(normal, State#sunday_state{socket=Socket,machine=Machine});
 		_Else ->
 			loop(waiting_for_socket, State)
